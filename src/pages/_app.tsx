@@ -1,17 +1,27 @@
-import { AppProps } from 'next/app'
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider as NextAuthProvider } from 'next-auth/react'
 
-import '../styles/global.scss';
+import { Header } from '../components/Header'
 
-function MyApp({ 
-    Component, 
-    pageProps: { session, ...pageProps } 
-  } 
-  : AppProps) {
+import NextNProgress from 'nextjs-progressbar'
+import { AnimatePresence } from 'framer-motion'
+
+import '../styles/global.scss'
+
+function MyApp({ Component, pageProps }) {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <AnimatePresence exitBeforeEnter>
+      <NextAuthProvider session={pageProps.session}>
+        <NextNProgress
+          color='#EBA417'
+          startPosition={0.3}
+          stopDelayMs={200}
+          height={3}
+        />
+
+        <Header />
+        <Component {...pageProps} />
+      </NextAuthProvider>
+    </AnimatePresence>
   )
 }
 

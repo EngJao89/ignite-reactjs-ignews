@@ -1,20 +1,21 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { query as q } from 'faunadb'
-import { getSession } from 'next-auth/react'
-import { fauna } from "../../services/fauna";
-import { stripe } from '../../services/stripe'
+import { getSession } from 'next-auth/react';
+import { query as q } from 'faunadb';
+
+import { fauna } from '../../services/fauna';
+import { stripe } from "../../services/stripe";
 
 type User = {
   ref: {
     id: string;
   }
   data: {
-    stripe_customer_id: string
+    stripe_customer_id: string;
   }
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
+export default async (req: NextApiRequest, res: NextApiResponse ) => {
+  if(req.method === 'POST') {
     const session = await getSession({ req })
 
     const user = await fauna.query<User>(
@@ -26,9 +27,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
     )
 
-    let customerId = user.data.stripe_customer_id
+    let customerId = user.data.stripe_customer_id;
 
-    if (!customerId) {
+    if(!customerId) {
       const stripeCustomer = await stripe.customers.create({
         email: session.user.email,
         // metadata
@@ -47,13 +48,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       customerId = stripeCustomer.id
     }
-    
+
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
       billing_address_collection: 'required',
       line_items: [
-        { price: 'price_1IVhtPEr8Nl1t46KAhq5JOHw', quantity: 1 }
+        { price: 'price_1KcIShLTxKemwZChhV99tOTW', quantity: 1 }
       ],
       mode: 'subscription',
       allow_promotion_codes: true,

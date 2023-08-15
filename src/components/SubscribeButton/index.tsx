@@ -23,10 +23,10 @@ export function SubscribeButton() {
 
     //checkout session
     try {
-      const response = await api.post('/subscribe')
+     const response = await api.post('/subscribe')
 
-      const { sessionId } = response.data; 
-      const stripe = await getStripeJs();
+     const { sessionId } = response.data; 
+     const stripe = await getStripeJs();
 
       await stripe.redirectToCheckout({ sessionId })
     } catch (err) {

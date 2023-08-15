@@ -4,17 +4,29 @@
 }
 
 .headerContent {
-  max-width: 1120px;
+  max-width: 1200px;
   height: 5rem;
   margin: 0 auto;
   padding: 0 2rem;
 
   display: flex;
   align-items: center;
+  
+  @media(max-width: 720px) {
+    padding: 0 1rem;
+
+    img {
+      width: 65px;
+    }
+  }
 
   nav {
     margin-left: 5rem;
     height: 5rem;
+
+    @media(max-width: 720px) {
+      margin-left: 1rem;
+    }
 
     a {
       display: inline-block;
@@ -30,6 +42,12 @@
         margin-left: 2rem;
       }
 
+      @media(max-width: 720px) {
+        & + a {
+          margin-left: 0.3rem;
+        }
+      }
+
       &:hover {
         color: var(--white);
       }
@@ -37,17 +55,17 @@
       &.active {
         color: var(--white);
         font-weight: bold;
-      }
 
-      &.active::after {
-        content: '';
-        height: 3px;
-        border-radius: 3px 3px 0 0;
-        width: 100%;
-        position: absolute;
-        bottom: 1px;
-        left: 0;
-        background: var(--yellow-500);
+        &::after {
+          content: '';
+          height: 3px;
+          border-radius: 3px 3px 0 0;
+          width: 100%;
+          position: absolute;
+          bottom: 1px;
+          left: 0;  
+          background: var(--yellow-500);
+        }
       }
     }
   }
